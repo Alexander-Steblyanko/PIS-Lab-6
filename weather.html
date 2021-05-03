@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML  4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Стеблянко Weather</title>
+  <style>
+  .container {
+	background-color: #f7d1ff;
+	padding: 10px 10px;
+	font-size: 16px;
+  }
+  </style>
+ </head>
+ <body>
+	<script>
+  function connect() { 
+	var city = document.getElementById("cityname").value;
+	var weatherpost = document.getElementById("weatherdisplay");
+	
+	weatherpost.setAttribute("class", "container");;
+	
+	var request = new XMLHttpRequest();
+	request.open('GET', 'http://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=b22440719a3c03939bcd5535d7eba534');
+	request.responseType = 'json';
+	//Відправка запиту
+	request.send();
+	request.onload = function() {
+	  var result = request.response;
+	  weatherpost.innerHTML = "<p style=\"font-size:20px\">"+city+", current date: "+ new Date().toDateString()+"</p>";
+	  weatherpost.innerHTML += "<p>Weather: "+result.weather[0].description+"</p>";
+	  weatherpost.innerHTML += "<p>Temperature: "+Math.round(result.main.temp-273.16)+" C</p>";
+	  weatherpost.innerHTML += "<p>Humidity: "+result.main.humidity+"%</p>";
+	  weatherpost.innerHTML += "<p>Wind speed: "+result.wind.speed+" MPH</p>";
+	  return;
+	};
+  };
+	</script>
+	<div id="weatherdisplay"> </div>
+	<br>
+	<div class="container">
+	  <form>
+	  <label for="cityname">City Name:</label>
+	  <input type="text" id="cityname" name="cityname" value="">
+	  <br>
+	  <input type="button" onclick="connect()" value="Check Weather">
+	  </form>
+	</div>
+ </body>
+</html>
